@@ -27,19 +27,43 @@
       color: #0077cc;
     }
 
-    a.download {
-      display: inline-block;
+    button.download {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       margin-top: 20px;
       padding: 12px 24px;
       background: #0077cc;
       color: white;
+      border: none;
       border-radius: 8px;
-      text-decoration: none;
       font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
     }
 
-    a.download:hover {
+    button.download:hover {
       background: #005fa3;
+    }
+
+    button.download:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 3px solid #fff;
+      border-top: 3px solid #0077cc;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     .screenshots {
@@ -58,14 +82,40 @@
     <p>Grâce à mes compétences en React Native, j'ai développé cette application mobile.</p>
     <p>Elle vous donne votre position géographique et les données météo en temps réel.</p>
     
-    <a class="download" href="./WeatherApp.apk" download>
-      📥 Télécharger l'APK
-    </a>
+    <button class="download" id="downloadBtn">
+      <span id="buttonText">📥 Télécharger l'APK</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
 
     <div class="screenshots">
       <p>📸 Testez l'app et postez une capture d'écran en commentaire sur Facebook !</p>
     </div>
   </div>
+
+  <script>
+    const downloadBtn = document.getElementById('downloadBtn');
+    const buttonText = document.getElementById('buttonText');
+    const spinner = document.getElementById('spinner');
+  
+    downloadBtn.addEventListener('click', () => {
+      // Mettre le bouton en mode "loading"
+      downloadBtn.disabled = true;
+      buttonText.textContent = 'Préparation...';
+      spinner.style.display = 'block';
+  
+      // Après 5 secondes
+      setTimeout(() => {
+        // Arrêter le spinner et réinitialiser le bouton
+        spinner.style.display = 'none';
+        buttonText.textContent = '📥 Télécharger l\'APK';
+        downloadBtn.disabled = false;
+  
+        // Ensuite lancer le téléchargement
+        window.location.href = './WeatherApp.apk';
+      }, 10000);
+    });
+  </script>
+  
 
 </body>
 </html>
